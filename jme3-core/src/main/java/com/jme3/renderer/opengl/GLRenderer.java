@@ -1712,6 +1712,42 @@ public final class GLRenderer implements Renderer {
         GLImageFormat glFormat = texUtil.getImageFormatWithError(format, false);
         readFrameBufferWithGLFormat(fb, byteBuf, glFormat.format, glFormat.dataType);
     }
+    
+    private void readDepthBufferPixelWithFormat(FrameBuffer fb, ByteBuffer byteBuf, int glFormat, int dataType, int x, int y) {
+        if (fb != null) {
+            RenderBuffer rb = fb.getDepthBuffer();
+            if (rb == null) {
+                throw new IllegalArgumentException("Specified framebuffer"
+                        + " does not have a colorbuffer");
+            }
+
+            setFrameBuffer(fb);
+            if (gl2 != null) {
+                if (context.boundReadBuf != rb.getSlot()) {
+                    gl2.glReadBuffer(GLFbo.GL_COLOR_ATTACHMENT0_EXT + rb.getSlot());
+                    context.boundReadBuf = rb.getSlot();
+                }
+            }
+        } else {
+            setFrameBuffer(null);
+        }
+        if (x > vpW){
+            x = vpW;
+        } else if (x < 0){
+            x = 0;
+        }
+        if (y > vpH) {
+            y = vpH;
+        } else if (y < 0) {
+            y = 0;
+        }
+        gl.glReadPixels(x, y, 1, 1, glFormat, dataType, byteBuf);
+    }
+    
+    public void readDepthBufferPixelWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format, int x, int y){
+        GLImageFormat glFormat = texUtil.getImageFormatWithError(format, false);
+        GLRenderer.this.readDepthBufferPixelWithFormat(fb, byteBuf, glFormat.format, glFormat.dataType, x, y);
+    }
 
     private void deleteRenderBuffer(FrameBuffer fb, RenderBuffer rb) {
         intBuf1.put(0, rb.getId());

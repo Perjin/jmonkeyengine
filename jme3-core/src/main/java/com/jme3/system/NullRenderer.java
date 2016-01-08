@@ -164,4 +164,8 @@ public class NullRenderer implements Renderer {
     public void readFrameBufferWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format) {        
     }
 
+    @Override
+    public void readDepthBufferPixelWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format, int x, int y) {
+    }
+
 }

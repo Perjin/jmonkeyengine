@@ -214,7 +214,7 @@ public interface Renderer {
     /**
      * Reads the pixels currently stored in the specified framebuffer
      * into the given ByteBuffer object. 
-     * Only color pixels are transferred, witht hte given format. 
+     * Only color pixels are transferred, witht the given format. 
      * The given byte buffer should have at least
      * fb.getWidth() * fb.getHeight() * 4 bytes remaining.
      * 
@@ -224,6 +224,19 @@ public interface Renderer {
      */
     public void readFrameBufferWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format);
 
+    /**
+     * Reads the depth value currently stored in the specified framebuffer
+     * into the given ByteBuffer object. 
+     * Only a depth value is transferred, witht the given format. 
+     * 
+     * @param fb The framebuffer to read from
+     * @param byteBuf The bytebuffer to transfer depth data to
+     * @param format the image format to use when reading the frameBuffer.
+     * @param x position of the point to sample.
+     * @param y position of the point to sample.
+     */
+    public void readDepthBufferPixelWithFormat(FrameBuffer fb, ByteBuffer byteBuf, Image.Format format, int x, int y);
+    
     /**
      * Deletes a framebuffer and all attached renderbuffers
      */
